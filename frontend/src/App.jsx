@@ -4,6 +4,7 @@ import ApiResponse from "./components/ApiResponse";
 import "./App.css";
 
 import CommitSearchCard from "./components/CommitSearchCard";
+import CommitSearchResults from "./components/CommitSearchResults";
 
 function App() {
   const [result, setResult] = useState(null);
@@ -30,7 +31,11 @@ function App() {
   apiUrl={apiUrl}
   setResult={setResult}
 />
-        <ApiResponse result={result} />
+        {result?.results ? (
+  <CommitSearchResults result={result} />
+) : (
+  <ApiResponse result={result} />
+)}
       </div>
     </main>
   );

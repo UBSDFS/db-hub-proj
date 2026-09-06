@@ -138,3 +138,44 @@ pre {
     grid-column: auto;
   }
 }
+.search-results {
+  width: 100%;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.commit-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.commit-result {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.commit-result h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.commit-result p {
+  margin: 0.35rem 0;
+}
+
+.commit-result code {
+  word-break: break-all;
+}
+
+.commit-message {
+  margin-top: 1rem !important;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
