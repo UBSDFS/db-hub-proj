@@ -3,7 +3,22 @@ from redis_client import redis_client
 from redis_service import create_commit
 from redis_service import get_commit, update_commit, delete_commit
 
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import Optional
+
 app = FastAPI()
+
+
+class CommitUpdate(BaseModel):
+    repo_name: Optional[str] = None
+    author_name: Optional[str] = None
+    author_email: Optional[str] = None
+    committer_name: Optional[str] = None
+    committer_email: Optional[str] = None
+    subject: Optional[str] = None
+    message: Optional[str] = None
+    tree: Optional[str] = None
 
 
 @app.get("/")
@@ -35,10 +50,27 @@ def create_commit_endpoint(commit_data: dict):
 def get_commit_endpoint(commit_sha: str):
     commit = get_commit(commit_sha)
 
+    if not commit:
+        raise HTTPException(
+            status_code=404,
+            detail="Commit not found"
+        )
+
     return commit
+
 @app.put("/commits/{commit_sha}")
-def update_commit_endpoint(commit_sha: str, updates: dict):
-    updated_commit = update_commit(commit_sha, updates)
+def update_commit_endpoint(commit_sha: str, updates: CommitUpdate):
+    existing_commit = get_commit(commit_sha)
+
+    if not existing_commit:
+        raise HTTPException(
+            status_code=404,
+            detail="Commit not found"
+        )
+
+    update_data = updates.model_dump(exclude_none=True)
+
+    updated_commit = update_commit(commit_sha, update_data)
 
     return {
         "message": "Commit updated",
@@ -48,7 +80,28 @@ def update_commit_endpoint(commit_sha: str, updates: dict):
 def delete_commit_endpoint(commit_sha: str):
     deleted = delete_commit(commit_sha)
 
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="Commit not found"
+        )
+
     return {
-        "message": "Commit deleted" if deleted else "Commit not found",
-        "deleted": bool(deleted)
+        "message": "Commit deleted"
     }
+
+# Models for request validation
+class Person(BaseModel):
+    name: str
+    email: str
+
+
+class CommitCreate(BaseModel):
+    commit: str
+    repo_name: str
+    author: Person
+    committer: Person
+    subject: str
+    message: str
+    tree: str
+
