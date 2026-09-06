@@ -36,3 +36,11 @@ def get_commit_endpoint(commit_sha: str):
     commit = get_commit(commit_sha)
 
     return commit
+@app.put("/commits/{commit_sha}")
+def update_commit_endpoint(commit_sha: str, updates: dict):
+    updated_commit = update_commit(commit_sha, updates)
+
+    return {
+        "message": "Commit updated",
+        "commit": updated_commit
+    }
