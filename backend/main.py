@@ -44,3 +44,11 @@ def update_commit_endpoint(commit_sha: str, updates: dict):
         "message": "Commit updated",
         "commit": updated_commit
     }
+@app.delete("/commits/{commit_sha}")
+def delete_commit_endpoint(commit_sha: str):
+    deleted = delete_commit(commit_sha)
+
+    return {
+        "message": "Commit deleted" if deleted else "Commit not found",
+        "deleted": bool(deleted)
+    }
