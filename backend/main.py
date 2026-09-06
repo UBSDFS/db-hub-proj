@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from redis_client import redis_client
 from redis_service import create_commit
+from redis_service import get_commit, update_commit, delete_commit
 
 app = FastAPI()
 
@@ -30,3 +31,8 @@ def create_commit_endpoint(commit_data: dict):
         "message": "Commit created",
         "key": key
     }
+@app.get("/commits/{commit_sha}")
+def get_commit_endpoint(commit_sha: str):
+    commit = get_commit(commit_sha)
+
+    return commit
