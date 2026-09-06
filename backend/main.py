@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from redis_client import redis_client
+from redis_service import create_commit
 
 app = FastAPI()
 
@@ -13,13 +14,19 @@ def home():
 def redis_status():
     try:
         redis_client.ping()
-
-        return {
-            "redis": "connected"
-        }
-
+        return {"redis": "connected"}
     except Exception as error:
         return {
             "redis": "disconnected",
             "error": str(error)
         }
+
+
+@app.post("/commits")
+def create_commit_endpoint(commit_data: dict):
+    key = create_commit(commit_data)
+
+    return {
+        "message": "Commit created",
+        "key": key
+    }
