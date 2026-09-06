@@ -1,15 +1,13 @@
-from redis_service import (
-    create_commit,
-    get_commit,
-    update_commit,
-    delete_commit
-)
+from redis_service import search_commits
 
-deleted = delete_commit("test123")
+results = search_commits(repo_name="torvalds/linux")
 
-print("\nDelete result:")
-print(deleted)
-commit_after_delete = get_commit("test123")
+print(f"\nFound {len(results)} commits")
 
-print("\nCommit after delete:")
-print(commit_after_delete)
+for commit in results[:5]:
+    print(
+        commit["commit"],
+        commit["repo_name"],
+        commit["author_name"],
+        commit["subject"]
+    )

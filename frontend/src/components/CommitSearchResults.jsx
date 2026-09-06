@@ -17,7 +17,7 @@ function CommitSearchResults({ result }) {
 
   if (result.results.length === 0) {
     return (
-      <section className="card">
+      <section className="search-results">
         <h2>Search Results</h2>
         <p>No commits found.</p>
       </section>
@@ -25,7 +25,7 @@ function CommitSearchResults({ result }) {
   }
 
   return (
-    <section className="card search-results">
+    <section className="search-results">
       <div className="results-header">
         <h2>Search Results</h2>
         <span>{result.count} commits found</span>
@@ -39,25 +39,24 @@ function CommitSearchResults({ result }) {
           >
             <h3>{commit.subject || "No subject"}</h3>
 
-            <p>
-              <strong>Repository:</strong>{" "}
-              {commit.repo_name}
-            </p>
+            <div className="commit-meta">
+              <p>
+                <strong>Repository:</strong> {commit.repo_name}
+              </p>
 
-            <p>
-              <strong>Author:</strong>{" "}
-              {commit.author_name}
-            </p>
+              <p>
+                <strong>Author:</strong> {commit.author_name}
+              </p>
 
-            <p>
-              <strong>Email:</strong>{" "}
-              {commit.author_email}
-            </p>
+              <p>
+                <strong>Email:</strong> {commit.author_email}
+              </p>
+            </div>
 
-            <p>
-              <strong>SHA:</strong>{" "}
+            <div className="sha-row">
+              <strong>SHA:</strong>
               <code>{commit.commit}</code>
-            </p>
+            </div>
 
             {commit.message && (
               <p className="commit-message">
