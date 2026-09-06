@@ -1,7 +1,13 @@
 from fastapi import FastAPI
 from redis_client import redis_client
 from redis_service import create_commit
-from redis_service import get_commit, update_commit, delete_commit
+from redis_service import (
+    create_commit,
+    get_commit,
+    update_commit,
+    delete_commit,
+    search_commits
+)
 
 
 from fastapi import FastAPI, HTTPException
@@ -58,6 +64,25 @@ def create_commit_endpoint(commit_data: dict):
         "message": "Commit created",
         "key": key
     }
+@app.get("/commits/search")
+def search_commits_endpoint(
+    repo_name: Optional[str] = None,
+    author_name: Optional[str] = None,
+    author_email: Optional[str] = None,
+    subject: Optional[str] = None
+):
+    results = search_commits(
+        repo_name=repo_name,
+        author_name=author_name,
+        author_email=author_email,
+        subject=subject
+    )
+
+    return {
+        "count": len(results),
+        "results": results
+    }
+
 @app.get("/commits/{commit_sha}")
 def get_commit_endpoint(commit_sha: str):
     commit = get_commit(commit_sha)
