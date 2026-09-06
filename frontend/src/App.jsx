@@ -3,6 +3,8 @@ import RedisCrudCard from "./components/RedisCrudCard";
 import ApiResponse from "./components/ApiResponse";
 import "./App.css";
 
+import CommitSearchCard from "./components/CommitSearchCard";
+
 function App() {
   const [result, setResult] = useState(null);
 
@@ -24,7 +26,10 @@ function App() {
           apiUrl={apiUrl}
           onResult={setResult}
         />
-
+<CommitSearchCard
+  apiUrl={apiUrl}
+  setResult={setResult}
+/>
         <ApiResponse result={result} />
       </div>
     </main>
